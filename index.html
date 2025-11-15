@@ -1,422 +1,286 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MangaDrive - Home</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Bangers&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manga Reader</title>
+
 <style>
-  * {
+body {
+    font-family: Arial;
+    background: #111;
+    color: white;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Poppins', Arial, sans-serif;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    color: #fff;
-    min-height: 100vh;
-  }
-  
-  header {
-    background: linear-gradient(90deg, #000 0%, #1a1a1a 50%, #000 100%);
-    color: #fff;
-    padding: 1.5rem 2rem;
-    font-family: 'Bangers', cursive;
-    letter-spacing: 3px;
-    font-size: 2.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  
-  .logo {
-    background: linear-gradient(45deg, #ff0000, #ff6b6b);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-  }
-  
-  #login-btn, #logout-btn {
-    background: linear-gradient(45deg, #ff0000, #ff4444);
-    border: none;
-    border-radius: 25px;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
-  }
-  
-  #login-btn:hover, #logout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
-    background: linear-gradient(45deg, #ff4444, #ff0000);
-  }
-  
-  .container {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-  }
-  
-  /* Instagram-style cards */
-  .card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(255, 0, 0, 0.2);
-  }
-  
-  /* Carousel styles */
-  .carousel {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    margin-bottom: 2rem;
-    overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  }
-  
-  .carousel-images {
-    display: flex;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
-  }
-  
-  .carousel-images img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-  
-  .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(45deg, #ff0000, #ff4444);
-    border: none;
-    color: white;
-    font-size: 1.8rem;
-    padding: 0.8rem;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
-  }
-  
-  .carousel-btn:hover {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.6);
-  }
-  
-  #prev-btn { left: 20px; }
-  #next-btn { right: 20px; }
-  
-  /* Search bar */
-  #search-bar {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-  }
-  
-  #search-bar:focus {
-    outline: none;
-    border-color: #ff0000;
-    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
-  }
-  
-  #search-bar::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-  }
-  
-  .search-disabled {
-    background: rgba(255, 255, 255, 0.02);
-    color: #666;
-    cursor: not-allowed;
-  }
-  
-  /* Section headers */
-  h2 {
-    font-family: 'Bangers', cursive;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(45deg, #ff0000, #ff6b6b);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: 2px;
-  }
-  
-  h3 {
-    font-family: 'Bangers', cursive;
-    font-size: 1.5rem;
-    color: #ff4444;
-    letter-spacing: 1px;
-  }
-  
-  /* Manga list - Instagram post style */
-  .manga-list {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    gap: 1rem;
-  }
-  
-  .manga-list li {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1.5rem;
-    border-radius: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  
-  .manga-list li:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
-    border-color: rgba(255, 0, 0, 0.3);
-  }
-  
-  .manga-title {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #fff;
-  }
-  
-  .manga-link-btn, #add-manga-btn {
-    background: linear-gradient(45deg, #ff0000, #ff4444);
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    padding: 0.7rem 1.5rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
-  }
-  
-  .manga-link-btn:hover, #add-manga-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
-  }
-  
-  .login-required-btn {
-    background: linear-gradient(45deg, #666, #888);
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    padding: 0.7rem 1.5rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .login-required-btn:hover {
-    background: linear-gradient(45deg, #ff0000, #ff4444);
-    transform: translateY(-2px);
-  }
-  
-  /* Admin section */
-  #admin-section {
-    margin-top: 2rem;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 100, 100, 0.05));
-    border-radius: 20px;
-    border: 2px dashed rgba(255, 0, 0, 0.3);
-  }
-  
-  #admin-section input {
-    margin: 0.5rem;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    backdrop-filter: blur(10px);
-  }
-  
-  #admin-section input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-  }
-  
-  #user-email {
-    font-weight: 600;
-    color: #ff6b6b;
-    margin-right: 1rem;
-    font-size: 0.9rem;
-  }
-  
-  #header-right {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .login-message {
     text-align: center;
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 100, 100, 0.05));
-    border-radius: 20px;
-    margin: 2rem 0;
-    border: 2px solid rgba(255, 0, 0, 0.2);
-  }
-  
-  .login-message h3 {
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    header {
-      font-size: 2rem;
-      padding: 1rem;
-    }
-    
-    .container {
-      padding: 0 0.5rem;
-    }
-    
-    .card {
-      padding: 1.5rem;
-    }
-    
-    .carousel {
-      height: 250px;
-    }
-    
-    #search-bar {
-      font-size: 1rem;
-    }
-  }
-  
-  /* Cool animations */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .card {
-    animation: fadeInUp 0.6s ease;
-  }
+}
+h1, h2 { margin: 10px 0; }
+
+#carousel {
+    width: 90%;
+    height: 350px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 15px;
+    position: relative;
+}
+#carousel-images {
+    display: flex;
+    transition: 0.4s ease;
+}
+#carousel-images img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+}
+
+/* Buttons */
+button {
+    background: #ff4757;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover { opacity: 0.8; }
+.login-required-btn { background: gray; cursor: not-allowed; }
+
+/* Lists */
+#manga-list li, #popular-list li {
+    background: #222;
+    margin: 8px auto;
+    padding: 10px;
+    width: 90%;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px auto;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+}
+
+/* Admin */
+#admin-section {
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    margin: 20px auto;
+    display: none;
+}
 </style>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">MangaDrive</div>
-  <div id="header-right">
-    <span id="user-email"></span>
-    <button id="login-btn" onclick="googleLogin()">Login / Signup</button>
-    <button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
-  </div>
-</header>
+<h1>Manga Reader</h1>
 
-<div class="container">
+<!-- User Info -->
+<p>Logged in as: <span id="user-email">Not logged in</span></p>
+<button id="login-btn" onclick="googleLogin()">Login with Google</button>
+<button id="logout-btn" onclick="logout()" style="display:none;">Logout</button>
 
-  <!-- Image Carousel -->
-  <div class="carousel" id="carousel">
-    <button class="carousel-btn" id="prev-btn">&#10094;</button>
-    <div class="carousel-images" id="carousel-images">
-      <!-- Images added dynamically -->
-    </div>
-    <button class="carousel-btn" id="next-btn">&#10095;</button>
-  </div>
+<hr>
 
-  <!-- Search bar -->
-  <input type="text" id="search-bar" placeholder="Login to search manga titles..." disabled />
+<!-- Search -->
+<input type="text" id="search-bar" placeholder="Login to search..." disabled />
 
-  <!-- Login message for non-logged users -->
-  <div id="login-message" class="login-message" style="display:none;">
-    <h3>🔒 Join the Community!</h3>
-    <p>Sign in with your Google account to unlock unlimited manga reading and exclusive features!</p>
-  </div>
+<!-- Login message -->
+<p id="login-message" style="color:red; display:block;">Please log in to access all manga.</p>
 
-  <!-- Most Popular Titles -->
-  <div class="card">
-    <h2>🔥 Most Popular Manga</h2>
-    <ul class="manga-list" id="popular-list">
-      <!-- Popular manga list here -->
-    </ul>
-  </div>
+<!-- Carousel -->
+<div id="carousel">
+    <div id="carousel-images"></div>
+</div>
+<button id="prev-btn">Prev</button><button id="next-btn">Next</button>
 
-  <!-- All Manga Titles -->
-  <div class="card">
-    <h2>📚 All Manga Collection</h2>
-    <ul class="manga-list" id="manga-list">
-      <!-- All manga list here -->
-    </ul>
-  </div>
+<h2>Popular Manga</h2>
+<ul id="popular-list"></ul>
 
-  <!-- Admin Section -->
-  <div id="admin-section" style="display:none;">
-    <h3>👑 Owner Panel: Add New Manga</h3>
-    <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem;">
-      <input type="text" id="manga-title" placeholder="Manga Title" style="flex: 1; min-width: 200px;" />
-      <input type="url" id="manga-link" placeholder="Google Drive Link" style="flex: 1; min-width: 250px;" />
-      <input type="url" id="manga-cover" placeholder="Cover Image URL" style="flex: 1; min-width: 250px;" />
-      <button id="add-manga-btn" onclick="addManga()">Add Manga</button>
-    </div>
-  </div>
+<h2>All Manga</h2>
+<ul id="manga-list"></ul>
 
+<!-- Admin Panel -->
+<div id="admin-section">
+    <h2>Admin Panel</h2>
+    <input id="new-title" placeholder="Manga title" />
+    <input id="new-cover" placeholder="Cover image URL" />
+    <input id="new-link" placeholder="Google Drive link" />
+    <button onclick="addManga()">Add Manga</button>
 </div>
 
-<script>
-  const GOOGLE_CLIENT_ID = "592802901411-bcm8nl0odr1mbhifqc7tphqmvtohs71v.apps.googleusercontent.com"; // Replace with your actual client ID
-  const OWNER_EMAIL = "krutarth14833@gmail.com"; // Replace with your email for admin rights
+<!-- GOOGLE LOGIN SDK -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.min.js"></script>
 
-  // Sample manga data
-  let mangaDB = [
+<script>
+// ---------------- CONFIG ----------------
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE";
+const OWNER_EMAIL = "YOUR_EMAIL@gmail.com";
+
+// ------------- MANGA DATABASE -----------
+let mangaDB = [
     {
-      title: "One Piece Vol 1",
-      cover: "https://i.imgur.com/1P2pYzW.jpg",
-      link: "https://drive.google.com/file/d/FILE_ID/view?usp=sharing",
-      usage: 0
+        title: "One Piece Vol 1",
+        cover: "https://i.imgur.com/1P2pYzW.jpg",
+        link: "https://drive.google.com/file/d/FILE_ID/view",
+        usage: 0
     },
     {
-      title: "Naruto Vol 1",
-      cover: "https://i.imgur.com/9v0GBG6.jpg",
-      link: "https://drive.google.com/file/d/FILE
+        title: "Naruto Vol 1",
+        cover: "https://i.imgur.com/9v0GBG6.jpg",
+        link: "https://drive.google.com/file/d/FILE_ID/view",
+        usage: 0
+    }
+];
 
+let userEmail = null;
 
+// ---------------- GOOGLE LOGIN ----------------
+function googleLogin() {
+    google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: handleResponse
+    });
+    google.accounts.id.prompt();
+}
 
+function handleResponse(res) {
+    const data = jwt_decode(res.credential);
+    userEmail = data.email;
+
+    document.getElementById("user-email").textContent = userEmail;
+    document.getElementById("login-btn").style.display = "none";
+    document.getElementById("logout-btn").style.display = "inline-block";
+    document.getElementById("login-message").style.display = "none";
+
+    enableFeatures();
+}
+
+function logout() {
+    userEmail = null;
+    document.getElementById("user-email").textContent = "Not logged in";
+    document.getElementById("login-btn").style.display = "inline-block";
+    document.getElementById("logout-btn").style.display = "none";
+
+    disableFeatures();
+}
+
+// ---------------- ENABLE/DISABLE FEATURES ---------------
+function enableFeatures() {
+    document.getElementById("search-bar").disabled = false;
+    document.getElementById("search-bar").placeholder = "Search manga...";
+    
+    if (userEmail === OWNER_EMAIL)
+        document.getElementById("admin-section").style.display = "block";
+
+    renderManga();
+}
+
+function disableFeatures() {
+    document.getElementById("search-bar").disabled = true;
+    document.getElementById("search-bar").placeholder = "Login to search...";
+    
+    document.getElementById("admin-section").style.display = "none";
+    
+    renderManga();
+}
+
+// ---------------- RENDER MANGA ----------------
+function renderManga() {
+    const list = document.getElementById("manga-list");
+    const pop = document.getElementById("popular-list");
+
+    list.innerHTML = "";
+    pop.innerHTML = "";
+
+    mangaDB.sort((a,b) => b.usage - a.usage);
+
+    mangaDB.forEach((m, i) => {
+        // Main list
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <span>${m.title}</span>
+            ${userEmail ? 
+            `<button onclick="openManga(${i})">Read</button>` :
+            `<button class="login-required-btn">Locked</button>` }
+        `;
+        list.appendChild(li);
+
+        // Popular (top 5)
+        if (i < 5) {
+            const li2 = li.cloneNode(true);
+            pop.appendChild(li2);
+        }
+    });
+}
+
+// ---------------- OPEN MANGA ----------------
+function openManga(i) {
+    mangaDB[i].usage++;
+    window.open(mangaDB[i].link, "_blank");
+    renderManga();
+}
+
+// ---------------- ADD MANGA (ADMIN) ----------------
+function addManga() {
+    const t = document.getElementById("new-title").value;
+    const c = document.getElementById("new-cover").value;
+    const l = document.getElementById("new-link").value;
+
+    if (!t || !c || !l) return alert("Fill all fields!");
+
+    mangaDB.push({ title: t, cover: c, link: l, usage: 0 });
+    loadCarousel();
+    renderManga();
+
+    document.getElementById("new-title").value = "";
+    document.getElementById("new-cover").value = "";
+    document.getElementById("new-link").value = "";
+}
+
+// ---------------- SEARCH ----------------
+document.getElementById("search-bar").addEventListener("input", () => {
+    const q = document.getElementById("search-bar").value.toLowerCase();
+    const li = document.querySelectorAll("#manga-list li");
+    
+    li.forEach(item => {
+        const name = item.textContent.toLowerCase();
+        item.style.display = name.includes(q) ? "flex" : "none";
+    });
+});
+
+// ---------------- CAROUSEL ----------------
+function loadCarousel() {
+    const c = document.getElementById("carousel-images");
+    c.innerHTML = "";
+    mangaDB.forEach(m => {
+        const img = document.createElement("img");
+        img.src = m.cover;
+        c.appendChild(img);
+    });
+}
+loadCarousel();
+
+let index = 0;
+function updateCarousel() {
+    const w = document.getElementById("carousel").clientWidth;
+    document.getElementById("carousel-images").style.transform = `translateX(${-index*w}px)`;
+}
+document.getElementById("next-btn").onclick = () => { index = (index + 1) % mangaDB.length; updateCarousel(); };
+document.getElementById("prev-btn").onclick = () => { index = (index - 1 + mangaDB.length) % mangaDB.length; updateCarousel(); };
+
+renderManga();
+</script>
+</body>
+</html>
