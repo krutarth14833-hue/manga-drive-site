@@ -5,38 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - MangaDrive</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
 </head>
 <body>
 
 <div class="login-container">
   <h1>Sign in to MangaDrive</h1>
+  <!-- Use this ID -->
   <button id="googleLogin" class="btn google">Continue with Google</button>
 </div>
 
-<script>
-  // --- STEP 4: Insert your Firebase keys here ---
+<!-- Firebase LOGIN SCRIPT -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  // Firebase Config
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    apiKey: "AIzaSyCJrEFFGHkxHqdK1tG4OS1CqvEBl8CYOnA",
+    authDomain: "manga-drive-48fc1.firebaseapp.com",
+    projectId: "manga-drive-48fc1",
+    storageBucket: "manga-drive-48fc1.appspot.com",
+    messagingSenderId: "434426747818",
+    appId: "1:434426747818:web:f114c70f24947b444829d3"
   };
 
-  const app = firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const provider = new firebase.auth.GoogleAuthProvider();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-  document.getElementById("googleLogin").onclick = function () {
-    auth.signInWithPopup(provider)
-      .then(() => {
-        alert("Login successful!");
+  // Use the correct button ID
+  document.getElementById("googleLogin").addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log("Logged in:", user.email);
+
+        localStorage.setItem("userEmail", user.email);
+
         window.location.href = "index.html";
       })
-      .catch(err => alert(err.message));
-  };
+      .catch((error) => {
+        console.error(error);
+        alert("Login failed: " + error.message);
+      });
+  });
 </script>
 
 </body>
